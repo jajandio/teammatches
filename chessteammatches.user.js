@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Chess.com Team Match ELO Analysis
+// @name         Chess.com Team Match ELO Analysis with Dynamic Content Support
 // @namespace    http://tampermonkey.net/
-// @version      1.10
-// @description  Add ELO analysis for team matches on chess.com for pairing highlights based on ELO difference
+// @version      1.11
+// @description  Add ELO analysis for team matches on chess.com, supporting dynamic page loads
 // @match        https://www.chess.com/club/matches/*
 // @grant        none
 // ==/UserScript==
@@ -12,9 +12,8 @@
 
     console.log("Tampermonkey script loaded.");
 
-    // Wait for the page to load
-    window.addEventListener('load', function() {
-        console.log("Page fully loaded, starting script.");
+    function runScript() {
+        console.log("Running ELO analysis script.");
 
         // Extract team names
         const teamNamesDiv = document.querySelector('.clubs-team-match-teams');
@@ -123,5 +122,18 @@
         } else {
             console.log("Stats section not found. Check if the selector '.clubs-team-match-details-stats' is correct.");
         }
+    }
+
+    // MutationObserver to detect when the match page content changes
+    const observer = new MutationObserver((mutations, observerInstance) => {
+        const teamMatchView = document.querySelector('.table-component.clubs-team-match-view');
+        if (teamMatchView) {
+            console.log("Detected match view loaded, executing script.");
+            observerInstance.disconnect(); // Stop observing once the content is loaded
+            runScript(); // Run the main script logic
+        }
     });
+
+    // Start observing the body for changes
+    observer.observe(document.body, { childList: true, subtree: true });
 })();
