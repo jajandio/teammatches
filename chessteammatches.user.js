@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         Chess.com Team Match ELO Analysis
-// @namespace    http://tampermonkey.net/
-// @version      1.14
-// @description  Add ELO analysis for team matches on chess.com
+// @namespace    https://github.com/jajandio/teammatches
+// @version      1.15
+// @description  Add ELO analysis for team matches on chess.com with localization support
 // @match        https://www.chess.com/club/matches/*
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/jajandio/teammatches/main/chessteammatches.user.js
+// @downloadURL  https://raw.githubusercontent.com/jajandio/teammatches/main/chessteammatches.user.js
 // ==/UserScript==
 
 (function() {
