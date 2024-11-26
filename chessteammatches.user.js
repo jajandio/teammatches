@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chess.com Team Match ELO Analysis
 // @namespace    http://tampermonkey.net/
-// @version      1.13
+// @version      1.14
 // @description  Add ELO analysis for team matches on chess.com
 // @match        https://www.chess.com/club/matches/*
 // @grant        none
@@ -13,16 +13,19 @@
     // Localization dictionary
     const translations = {
         en: {
-            advantage: "Advantage {team}: {boards} Boards"
+            advantage: "Advantage {team}",
+            boards: "{boards} Boards"
         },
         es: {
-            advantage: "Ventaja {team}: {boards} Tableros"
+            advantage: "Ventaja {team}",
+            boards: "{boards} Tableros"
         }
+        // Additional languages can be added here
     };
 
     // Determine browser language and select appropriate translations
-    const lang = navigator.language.startsWith('es') ? 'es' : 'en';
-    const t = translations[lang];
+    const lang = navigator.language.startsWith('es') ? 'es' : 'en'; // Default to English if not Spanish
+    const t = translations[lang] || translations['en']; // Fallback to English if language not supported
 
     function runScript() {
         // Extract team names
@@ -88,20 +91,27 @@
         // Display results in the stats section
         const statsSection = document.querySelector('.clubs-team-match-details-stats');
         if (statsSection) {
+            // Team 1 Stats Row
             const team1StatsRow = document.createElement('div');
             team1StatsRow.className = 'clubs-team-match-details-stats-row';
             team1StatsRow.innerHTML = `
-                ${t.advantage.replace('{team}', team1Name).replace('{boards}', team1Advantage)}
-                <aside class="clubs-team-match-aside">${team1Advantage} Boards</aside>
+                ${t.advantage.replace('{team}', team1Name)}
+                <aside class="clubs-team-match-aside">
+                    ${t.boards.replace('{boards}', team1Advantage)}
+                </aside>
             `;
 
+            // Team 2 Stats Row
             const team2StatsRow = document.createElement('div');
             team2StatsRow.className = 'clubs-team-match-details-stats-row';
             team2StatsRow.innerHTML = `
-                ${t.advantage.replace('{team}', team2Name).replace('{boards}', team2Advantage)}
-                <aside class="clubs-team-match-aside">${team2Advantage} Boards</aside>
+                ${t.advantage.replace('{team}', team2Name)}
+                <aside class="clubs-team-match-aside">
+                    ${t.boards.replace('{boards}', team2Advantage)}
+                </aside>
             `;
 
+            // Append the new rows to the stats section
             statsSection.appendChild(team1StatsRow);
             statsSection.appendChild(team2StatsRow);
         } else {
@@ -109,6 +119,7 @@
         }
     }
 
+    // MutationObserver to detect when the match page content changes
     const observer = new MutationObserver((mutations, observerInstance) => {
         const teamMatchView = document.querySelector('.table-component.clubs-team-match-view');
         if (teamMatchView) {
@@ -117,5 +128,6 @@
         }
     });
 
+    // Start observing the body for changes
     observer.observe(document.body, { childList: true, subtree: true });
 })();
