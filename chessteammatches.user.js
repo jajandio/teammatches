@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Chess.com Team Match ELO Analysis
 // @namespace    https://github.com/jajandio/teammatches
-// @version      1.15
-// @description  Add ELO analysis for team matches on chess.com with localization support
+// @version      1.16
+// @description  Add ELO analysis for team matches on chess.com
 // @match        https://www.chess.com/club/matches/*
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/jajandio/teammatches/main/chessteammatches.user.js
