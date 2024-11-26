@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chess.com Team Match ELO Analysis
 // @namespace    http://tampermonkey.net/
-// @version      1.12
+// @version      1.13
 // @description  Add ELO analysis for team matches on chess.com
 // @match        https://www.chess.com/club/matches/*
 // @grant        none
@@ -92,12 +92,14 @@
             team1StatsRow.className = 'clubs-team-match-details-stats-row';
             team1StatsRow.innerHTML = `
                 ${t.advantage.replace('{team}', team1Name).replace('{boards}', team1Advantage)}
+                <aside class="clubs-team-match-aside">${team1Advantage} Boards</aside>
             `;
 
             const team2StatsRow = document.createElement('div');
             team2StatsRow.className = 'clubs-team-match-details-stats-row';
             team2StatsRow.innerHTML = `
                 ${t.advantage.replace('{team}', team2Name).replace('{boards}', team2Advantage)}
+                <aside class="clubs-team-match-aside">${team2Advantage} Boards</aside>
             `;
 
             statsSection.appendChild(team1StatsRow);
